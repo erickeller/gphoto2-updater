@@ -30,6 +30,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+parallel_job=1
+nproc=$(nproc)
+if [ $nproc -gt 1 ]
+then
+    parallel_job=${nproc}
+fi
 latest_stable_version=2_5_9
 display_version=$(echo ${latest_stable_version} | tr '_' '.')
 branch_libgphoto=''
@@ -174,7 +180,7 @@ echo "Compiling and installing libusb 1.0.20"
 echo "--------------------------------------"
 
 ./configure
-make
+make -j ${parallel_job}
 make install
 cd ..
 
@@ -203,7 +209,7 @@ echo
 
 autoreconf --install --symlink
 ./configure
-make
+make -j ${parallel_job}
 make install
 cd ..
 
@@ -231,7 +237,7 @@ echo
 
 autoreconf --install --symlink
 ./configure
-make
+make -j ${parallel_job}
 make install
 cd ..
 
